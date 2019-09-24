@@ -21,6 +21,8 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 
     implementation wpi.deps.wpilib()
+    implementation wpi.deps.vendor.java()
+    nativeZip wpi.deps.vendor.jni(wpi.platforms.roborio)
 }
 
 snakeskin {
@@ -28,6 +30,7 @@ snakeskin {
     modules {
         core()
         frc()
+        ctre()
     }
 }
 
