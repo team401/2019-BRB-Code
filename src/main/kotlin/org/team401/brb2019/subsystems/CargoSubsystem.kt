@@ -1,34 +1,45 @@
 package org.team401.brb2019.subsystems
 
+import com.ctre.phoenix.motorcontrol.can.TalonSRX
 import edu.wpi.first.wpilibj.Solenoid
 import org.snakeskin.dsl.*
 import org.snakeskin.event.Events
 
 object CargoSubsystem : Subsystem() {
+    private val wheelsTalon = TalonSRX(1)
+    private val beltTalon = TalonSRX(2)
+
     private val intakeSolenoid = Solenoid(1)
 
-    enum class IntakeStates {
+    enum class States {
         Intaking,
-        Stowed
+        Stowed,
+        Shuttling,
+        Scoring,
     }
 
-    val intakeMachine: StateMachine<IntakeStates> = stateMachine {
-        state(CargoSubsystem.IntakeStates.Intaking) {
-           entry {
-               intakeSolenoid.set(true)
-           }
+    val cargoMachine: StateMachine<States> = stateMachine {
+        state(States.Intaking) {
+
         }
 
-        state(CargoSubsystem.IntakeStates.Stowed) {
-            entry {
-                intakeSolenoid.set(false)
-            }
+        state(States.Stowed) {
+
+        }
+
+        state(States.Shuttling) {
+
+        }
+
+        state(States.Scoring) {
+
         }
     }
+
+
 
     override fun setup() {
         on(Events.TELEOP_ENABLED) {
-            intakeMachine.setState(CargoSubsystem.IntakeStates.Stowed)
         }
     }
 
