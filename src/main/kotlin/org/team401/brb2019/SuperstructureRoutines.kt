@@ -1,5 +1,7 @@
 package org.team401.brb2019
 
+import org.team401.brb2019.subsystems.CargoSubsystem
+
 object SuperstructureRoutines {
     enum class GamepieceMode {
         Hatch,
@@ -29,13 +31,14 @@ object SuperstructureRoutines {
             }
 
             GamepieceMode.Cargo -> {
-
+                CargoSubsystem.cargoMachine.setState(CargoSubsystem.CargoStates.Intaking)
             }
         }
     }
 
     @Synchronized fun stopIntaking() {
-
+        //Insert Hatch code here
+        CargoSubsystem.cargoMachine.setState(CargoSubsystem.CargoStates.Shuttling)
     }
 
     @Synchronized fun startScoring() {
@@ -45,12 +48,14 @@ object SuperstructureRoutines {
             }
 
             GamepieceMode.Cargo -> {
+                CargoSubsystem.cargoMachine.setState(CargoSubsystem.CargoStates.Scoring)
 
             }
         }
     }
 
     @Synchronized fun stopScoring() {
-
+        //Insert Hatch code here
+        CargoSubsystem.cargoMachine.setState(CargoSubsystem.CargoStates.Stowed)
     }
 }
