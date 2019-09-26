@@ -10,4 +10,12 @@ object HardwareMap {
     const val cargoBeltTalonId = 6
 
     const val hatchWheelsTalonId = 7
+
+    const val cargoIntakeSolenoidId  = 0
+    const val hatchPusherSolenoidId = 1
+    const val climbingFrontSolenoidId = 2
+    const val climbingBackSolenoidId = 3
+
+    const val ballSensorInputId = 0
+
 }

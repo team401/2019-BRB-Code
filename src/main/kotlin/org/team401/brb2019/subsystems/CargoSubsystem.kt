@@ -7,14 +7,15 @@ import edu.wpi.first.wpilibj.Solenoid
 import org.snakeskin.dsl.*
 import org.snakeskin.event.Events
 import org.snakeskin.measure.Seconds
+import org.team401.brb2019.constants.HardwareMap
 
 object CargoSubsystem : Subsystem() {
-    private val wheelsTalon = TalonSRX(1)
-    private val beltTalon = TalonSRX(2)
+    private val wheelsTalon = TalonSRX(HardwareMap.cargoIntakeTalonId)
+    private val beltTalon = TalonSRX(HardwareMap.cargoBeltTalonId)
 
-    private val intakeSolenoid = Solenoid(1)
+    private val intakeSolenoid = Solenoid(HardwareMap.cargoIntakeSolenoidId)
 
-    private val ballSensor = DigitalInput(0)
+    private val ballSensor = DigitalInput(HardwareMap.ballSensorInputId)
 
     enum class CargoStates {
         Intaking,
