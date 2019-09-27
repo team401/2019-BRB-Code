@@ -16,6 +16,15 @@ val Gamepad = HumanControls.f310(3) {
         }
     }
 
+    whenButton(Buttons.RIGHT_BUMPER){
+        pressed{
+            SuperstructureRoutines.deployHatchPusher()
+        }
+        released{
+            SuperstructureRoutines.retractHatchPusher()
+        }
+    }
+
     whenButton(Buttons.B) {
         pressed {
             SuperstructureRoutines.startIntaking()

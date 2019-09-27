@@ -1,6 +1,7 @@
 package org.team401.brb2019
 
 import org.team401.brb2019.subsystems.CargoSubsystem
+import org.team401.brb2019.subsystems.HatchSubsystem
 
 object SuperstructureRoutines {
     enum class GamepieceMode {
@@ -24,10 +25,20 @@ object SuperstructureRoutines {
         updateGamepieceMode(toggledMode)
     }
 
+    @Synchronized fun deployHatchPusher(){
+        if(activeGamepieceMode == SuperstructureRoutines.GamepieceMode.Hatch){
+            HatchSubsystem.pusherMachine.setState(HatchSubsystem.PusherStates.Deployed)
+        }
+    }
+
+    @Synchronized fun retractHatchPusher(){
+        HatchSubsystem.pusherMachine.setState(HatchSubsystem.PusherStates.Stowed)
+    }
+
     @Synchronized fun startIntaking() {
         when (activeGamepieceMode) {
             GamepieceMode.Hatch -> {
-
+                HatchSubsystem.hatchMachine.setState(HatchSubsystem.States.Intaking)
             }
 
             GamepieceMode.Cargo -> {
@@ -37,14 +48,20 @@ object SuperstructureRoutines {
     }
 
     @Synchronized fun stopIntaking() {
-        //Insert Hatch code here
-        CargoSubsystem.cargoMachine.setState(CargoSubsystem.CargoStates.Shuttling)
+        when (activeGamepieceMode) {
+            GamepieceMode.Hatch ->{
+                HatchSubsystem.hatchMachine.setState(HatchSubsystem.States.Holding)
+            }
+            GamepieceMode.Cargo ->{
+                CargoSubsystem.cargoMachine.setState(CargoSubsystem.CargoStates.Shuttling)
+            }
+        }
     }
 
     @Synchronized fun startScoring() {
         when (activeGamepieceMode) {
             GamepieceMode.Hatch -> {
-
+                HatchSubsystem.hatchMachine.setState(HatchSubsystem.States.Scoring)
             }
 
             GamepieceMode.Cargo -> {
@@ -55,7 +72,7 @@ object SuperstructureRoutines {
     }
 
     @Synchronized fun stopScoring() {
-        //Insert Hatch code here
+        HatchSubsystem.hatchMachine.setState(HatchSubsystem.States.Stowed)
         CargoSubsystem.cargoMachine.setState(CargoSubsystem.CargoStates.Stowed)
     }
 }
