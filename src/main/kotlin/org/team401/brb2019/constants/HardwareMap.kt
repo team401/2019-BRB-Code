@@ -11,10 +11,10 @@ object HardwareMap {
 
     const val hatchWheelsTalonId = 1
 
-    const val cargoIntakeSolenoidId  = 0
-    const val hatchPusherSolenoidId = 1
-    const val climbingFrontSolenoidId = 2
-    const val climbingBackSolenoidId = 3
+    const val cargoIntakeSolenoidId  = 3
+    const val hatchPusherSolenoidId = 2
+    const val climbingFrontSolenoidId = 1
+    const val climbingBackSolenoidId = 0
 
     const val ballSensorInputId = 0
     const val ballSensorInputIdComplement = 1
