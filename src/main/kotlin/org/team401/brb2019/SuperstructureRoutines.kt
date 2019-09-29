@@ -9,7 +9,7 @@ object SuperstructureRoutines {
         Cargo
     }
 
-    var activeGamepieceMode = GamepieceMode.Hatch
+    var activeGamepieceMode = GamepieceMode.Cargo
     @Synchronized get
     private set
 

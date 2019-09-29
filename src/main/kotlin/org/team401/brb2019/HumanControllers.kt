@@ -9,7 +9,7 @@ val LeftStick = HumanControls.attack3(0) {
 val RightStick = HumanControls.attack3(1) {
 }
 
-val Gamepad = HumanControls.f310(3) {
+val Gamepad = HumanControls.f310(2) {
     whenButton(Buttons.LEFT_BUMPER) {
         pressed {
             SuperstructureRoutines.toggleGamepieceMode()
