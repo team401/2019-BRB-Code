@@ -13,8 +13,8 @@ import org.team401.brb2019.subsystems.DrivetrainSubsystem
 fun setup() {
     ControlPoller.pollInAutonomous = true
 
-    val compressor = Compressor()
-    compressor.stop()
+    //val compressor = Compressor()
+    //compressor.stop()
 
     Subsystems.add(DrivetrainSubsystem, CargoSubsystem, HatchSubsystem, ClimbingSubsystem)
     Controllers.add(LeftStick, RightStick, Gamepad)

@@ -53,7 +53,7 @@ object HatchSubsystem : Subsystem() {
                 pusherMachine.setState(PusherStates.Stowed)
             }
             action{
-                wheelsTalon.set(ControlMode.PercentOutput, -0.25)
+                wheelsTalon.set(ControlMode.PercentOutput, -0.1)
             }
         }
 

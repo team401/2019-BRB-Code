@@ -7,10 +7,8 @@ import edu.wpi.first.wpilibj.DigitalInput
 import edu.wpi.first.wpilibj.Solenoid
 import org.snakeskin.dsl.*
 import org.snakeskin.event.Events
-import org.snakeskin.measure.Milliseconds
 import org.snakeskin.measure.Seconds
-import org.snakeskin.utility.Ticker
-import org.team401.brb2019.constants.CargoBeltConstants
+import org.team401.brb2019.constants.PowerConstants
 import org.team401.brb2019.constants.HardwareMap
 
 object CargoSubsystem : Subsystem() {
@@ -51,8 +49,8 @@ object CargoSubsystem : Subsystem() {
             }
 
             action {
-                wheelsTalon.set(ControlMode.PercentOutput, 1.0)
-                beltTalon.set(ControlMode.PercentOutput, CargoBeltConstants.intakingPower)
+                wheelsTalon.set(ControlMode.PercentOutput, PowerConstants.cargoIntakePower)
+                beltTalon.set(ControlMode.PercentOutput, PowerConstants.beltIntakePower)
                 if (getBallSensorState() == BallSensorState.BallPresent) {
                     setState(CargoStates.Shuttling)
                 }
@@ -83,7 +81,7 @@ object CargoSubsystem : Subsystem() {
             }
 
             action {
-                beltTalon.set(ControlMode.PercentOutput, CargoBeltConstants.shuttlingPower)
+                beltTalon.set(ControlMode.PercentOutput, PowerConstants.beltShuttlingPower)
                 wheelsTalon.set(ControlMode.PercentOutput, 0.0)
                 val sensorState = getBallSensorState()
                 if (sensorState == BallSensorState.Fault || sensorState == BallSensorState.BallPresent) {
@@ -97,7 +95,7 @@ object CargoSubsystem : Subsystem() {
                 intakeSolenoid.set(false)
             }
             action {
-                beltTalon.set(ControlMode.PercentOutput, CargoBeltConstants.scoringPower)
+                beltTalon.set(ControlMode.PercentOutput, PowerConstants.beltScoringPower)
                 wheelsTalon.set(ControlMode.PercentOutput, 0.0)
             }
         }
