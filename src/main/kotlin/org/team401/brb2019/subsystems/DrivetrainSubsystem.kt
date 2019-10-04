@@ -7,7 +7,11 @@ import org.snakeskin.component.impl.CTRESmartGearbox
 import org.snakeskin.component.impl.DifferentialDrivetrain
 import org.snakeskin.dsl.*
 import org.snakeskin.event.Events
+import org.snakeskin.logic.scalars.Scalar
+import org.snakeskin.logic.scalars.ScalarGroup
+import org.snakeskin.logic.scalars.SquareScalar
 import org.snakeskin.measure.Seconds
+import org.snakeskin.utility.CheesyDriveController
 import org.team401.brb2019.LeftStick
 import org.team401.brb2019.RightStick
 import org.team401.brb2019.constants.DrivetrainGeometry
@@ -22,12 +26,27 @@ object DrivetrainSubsystem: Subsystem(), IDifferentialDrivetrain<CTRESmartGearbo
         OperatorControl
     }
 
+    private val cheesyController = CheesyDriveController(object : CheesyDriveController.DefaultParameters() {
+        override val quickTurnScalar = ScalarGroup(SquareScalar, object : Scalar {
+            override fun scale(input: Double): Double {
+                return input / 3.33
+            }
+        })
+    })
+
     val driveMachine: StateMachine<States> = stateMachine {
         state(States.OperatorControl) {
+            entry {
+                cheesyController.reset()
+            }
             action {
-                val translation = LeftStick.readAxis { PITCH }
-                val rotation = RightStick.readAxis { ROLL }
-                arcade(translation, rotation)
+                val output = cheesyController.update(
+                    LeftStick.readAxis { PITCH },
+                    RightStick.readAxis { ROLL },
+                    false,
+                    RightStick.readButton { TRIGGER }
+                )
+                tank(output.left, output.right)
             }
         }
     }

@@ -53,7 +53,7 @@ object HatchSubsystem : Subsystem() {
                 pusherMachine.setState(PusherStates.Stowed)
             }
             action{
-                wheelsTalon.set(ControlMode.PercentOutput, -0.1)
+                wheelsTalon.set(ControlMode.PercentOutput, 0.1)
             }
         }
 
@@ -62,13 +62,14 @@ object HatchSubsystem : Subsystem() {
                 pusherMachine.setState(PusherStates.Deployed)
             }
             action{
-                wheelsTalon.set(ControlMode.PercentOutput, -1.0)
+                wheelsTalon.set(ControlMode.PercentOutput, 1.0)
+                println(wheelsTalon.motorOutputVoltage)
             }
         }
 
         state(HatchSubsystem.States.Scoring) {
             action{
-                wheelsTalon.set(ControlMode.PercentOutput, 1.0)
+                wheelsTalon.set(ControlMode.PercentOutput, -1.0)
             }
         }
 

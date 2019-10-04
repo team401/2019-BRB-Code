@@ -1,5 +1,6 @@
 package org.team401.brb2019
 
+import edu.wpi.first.cameraserver.CameraServer
 import edu.wpi.first.wpilibj.Compressor
 import org.snakeskin.controls.ControlPoller
 import org.snakeskin.dsl.*
@@ -15,6 +16,8 @@ fun setup() {
 
     //val compressor = Compressor()
     //compressor.stop()
+
+    CameraServer.getInstance().startAutomaticCapture()
 
     Subsystems.add(DrivetrainSubsystem, CargoSubsystem, HatchSubsystem, ClimbingSubsystem)
     Controllers.add(LeftStick, RightStick, Gamepad)
