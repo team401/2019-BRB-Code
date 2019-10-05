@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.Solenoid
 import org.snakeskin.dsl.*
 import org.snakeskin.event.Events
 import org.snakeskin.measure.Seconds
+import org.team401.brb2019.LEDManager
 import org.team401.brb2019.constants.PowerConstants
 import org.team401.brb2019.constants.HardwareMap
 
@@ -40,6 +41,7 @@ object CargoSubsystem : Subsystem() {
         Stowed,
         Shuttling,
         Scoring,
+        Reverse
     }
 
     val cargoMachine: StateMachine<CargoStates> = stateMachine {
@@ -69,6 +71,17 @@ object CargoSubsystem : Subsystem() {
             }
         }
 
+        state(CargoStates.Reverse) {
+            entry {
+                intakeSolenoid.set(false)
+            }
+
+            action {
+                beltTalon.set(ControlMode.PercentOutput, -PowerConstants.beltIntakePower)
+                wheelsTalon.set(ControlMode.PercentOutput, 0.0)
+            }
+        }
+
         state(CargoStates.Shuttling) {
             timeout(2.0.Seconds, CargoStates.Stowed)
 
@@ -76,6 +89,7 @@ object CargoSubsystem : Subsystem() {
                 intakeSolenoid.set(false)
                 val sensorState = getBallSensorState()
                 if (sensorState == BallSensorState.Fault || sensorState == BallSensorState.BallPresent) {
+                    LEDManager.signalIntake()
                     setState(CargoStates.Stowed)
                 }
             }
@@ -85,6 +99,7 @@ object CargoSubsystem : Subsystem() {
                 wheelsTalon.set(ControlMode.PercentOutput, 0.0)
                 val sensorState = getBallSensorState()
                 if (sensorState == BallSensorState.Fault || sensorState == BallSensorState.BallPresent) {
+                    LEDManager.signalIntake()
                     setState(CargoStates.Stowed)
                 }
             }

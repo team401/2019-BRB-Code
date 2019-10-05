@@ -1,6 +1,7 @@
 package org.team401.brb2019
 
 import org.snakeskin.dsl.*
+import org.team401.brb2019.subsystems.CargoSubsystem
 import org.team401.brb2019.subsystems.ClimbingSubsystem
 
 val LeftStick = HumanControls.attack3(0) {
@@ -26,7 +27,7 @@ val RightStick = HumanControls.attack3(1) {
     }
 }
 
-val Gamepad = HumanControls.f310(2) {
+val Gamepad = HumanControls.dualAction(2) {
     whenButton(Buttons.LEFT_BUMPER) {
         pressed {
             SuperstructureRoutines.toggleGamepieceMode()
@@ -57,6 +58,15 @@ val Gamepad = HumanControls.f310(2) {
         }
         released {
             SuperstructureRoutines.stopScoring()
+        }
+    }
+
+    whenButton(Buttons.START) {
+        pressed {
+            CargoSubsystem.cargoMachine.setState(CargoSubsystem.CargoStates.Reverse)
+        }
+        released {
+            CargoSubsystem.cargoMachine.back()
         }
     }
 }

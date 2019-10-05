@@ -9,12 +9,14 @@ object SuperstructureRoutines {
         Cargo
     }
 
-    var activeGamepieceMode = GamepieceMode.Cargo
+    var activeGamepieceMode = GamepieceMode.Hatch
     @Synchronized get
     private set
 
     @Synchronized fun updateGamepieceMode(mode: GamepieceMode) {
         activeGamepieceMode = mode
+        LEDManager.update(isScoring = false, isIntaking = false, active = activeGamepieceMode)
+        stopScoring()
     }
 
     @Synchronized fun toggleGamepieceMode() {
@@ -45,6 +47,7 @@ object SuperstructureRoutines {
                 CargoSubsystem.cargoMachine.setState(CargoSubsystem.CargoStates.Intaking)
             }
         }
+        LEDManager.update(isScoring = false, isIntaking = true, active = activeGamepieceMode)
     }
 
     @Synchronized fun stopIntaking() {
@@ -56,6 +59,7 @@ object SuperstructureRoutines {
                 CargoSubsystem.cargoMachine.setState(CargoSubsystem.CargoStates.Shuttling)
             }
         }
+        LEDManager.update(isScoring = false, isIntaking = false, active = activeGamepieceMode)
     }
 
     @Synchronized fun startScoring() {
@@ -69,10 +73,12 @@ object SuperstructureRoutines {
 
             }
         }
+        LEDManager.update(isScoring = true, isIntaking = false, active = activeGamepieceMode)
     }
 
     @Synchronized fun stopScoring() {
         HatchSubsystem.hatchMachine.setState(HatchSubsystem.States.Stowed)
         CargoSubsystem.cargoMachine.setState(CargoSubsystem.CargoStates.Stowed)
+        LEDManager.update(isScoring = false, isIntaking = false, active = activeGamepieceMode)
     }
 }

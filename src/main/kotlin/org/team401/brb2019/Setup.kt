@@ -4,6 +4,7 @@ import edu.wpi.first.cameraserver.CameraServer
 import edu.wpi.first.wpilibj.Compressor
 import org.snakeskin.controls.ControlPoller
 import org.snakeskin.dsl.*
+import org.snakeskin.event.Events
 import org.snakeskin.registry.Controllers
 import org.team401.brb2019.subsystems.HatchSubsystem
 import org.team401.brb2019.subsystems.CargoSubsystem
@@ -14,11 +15,16 @@ import org.team401.brb2019.subsystems.DrivetrainSubsystem
 fun setup() {
     ControlPoller.pollInAutonomous = true
 
-    //val compressor = Compressor()
-    //compressor.stop()
-
     CameraServer.getInstance().startAutomaticCapture()
 
     Subsystems.add(DrivetrainSubsystem, CargoSubsystem, HatchSubsystem, ClimbingSubsystem)
     Controllers.add(LeftStick, RightStick, Gamepad)
+
+    on (Events.DISABLED) {
+        LEDManager.setDisabled()
+    }
+
+    on (Events.ENABLED) {
+        LEDManager.update(isScoring = false, isIntaking = false, active = SuperstructureRoutines.activeGamepieceMode)
+    }
 }

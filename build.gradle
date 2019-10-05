@@ -15,6 +15,8 @@ repositories {
     maven {
         url "http://maven.team401.org/artifactory/frc"
     }
+
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
@@ -22,6 +24,7 @@ dependencies {
 
     implementation wpi.deps.wpilib()
     implementation wpi.deps.vendor.java()
+    implementation 'com.github.team401:LightLink-Java:1.1'
     nativeZip wpi.deps.vendor.jni(wpi.platforms.roborio)
 }
 
@@ -37,7 +40,7 @@ snakeskin {
 deploy {
     targets {
         target("rio", edu.wpi.first.gradlerio.frc.RoboRIO) {
-            team = 401
+            team = 9998
         }
     }
     artifacts {
