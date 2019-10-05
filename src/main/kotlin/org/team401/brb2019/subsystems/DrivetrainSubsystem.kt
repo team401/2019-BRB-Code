@@ -40,6 +40,7 @@ object DrivetrainSubsystem: Subsystem(), IDifferentialDrivetrain<CTRESmartGearbo
                 cheesyController.reset()
             }
             action {
+                /*
                 val output = cheesyController.update(
                     LeftStick.readAxis { PITCH },
                     RightStick.readAxis { ROLL },
@@ -47,6 +48,11 @@ object DrivetrainSubsystem: Subsystem(), IDifferentialDrivetrain<CTRESmartGearbo
                     RightStick.readButton { TRIGGER }
                 )
                 tank(output.left, output.right)
+                */
+                 arcade(
+                     LeftStick.readAxis { PITCH },
+                     RightStick.readAxis { ROLL } * .75
+                 )
             }
         }
     }
