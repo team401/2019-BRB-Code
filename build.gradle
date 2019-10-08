@@ -40,7 +40,7 @@ snakeskin {
 deploy {
     targets {
         target("rio", edu.wpi.first.gradlerio.frc.RoboRIO) {
-            team = 9998
+            team = 401
         }
     }
     artifacts {

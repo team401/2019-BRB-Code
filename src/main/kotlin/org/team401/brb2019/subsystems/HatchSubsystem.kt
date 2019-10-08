@@ -5,11 +5,15 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX
 import edu.wpi.first.wpilibj.Solenoid
 import org.snakeskin.dsl.*;
 import org.snakeskin.event.Events
+import org.snakeskin.measure.Seconds
+import org.snakeskin.utility.Ticker
 import org.team401.brb2019.constants.HardwareMap
+
 
 object HatchSubsystem : Subsystem() {
     private val pusherSolenoid = Solenoid(HardwareMap.hatchPusherSolenoidId)
     private val wheelsTalon = TalonSRX(HardwareMap.hatchWheelsTalonId)
+    val tick = Ticker(({ wheelsTalon.outputCurrent > 50.0 }), 0.5.Seconds, 0.02.Seconds)
 
     enum class States {
         Stowed,
@@ -59,11 +63,15 @@ object HatchSubsystem : Subsystem() {
 
         state(HatchSubsystem.States.Intaking) {
             entry{
+                tick.reset()
                 pusherMachine.setState(PusherStates.Deployed)
             }
             action{
+
+
                 wheelsTalon.set(ControlMode.PercentOutput, 1.0)
-                println(wheelsTalon.motorOutputVoltage)
+                println(wheelsTalon.outputCurrent)
+                tick.check { setState(States.Stowed) }
             }
         }
 
