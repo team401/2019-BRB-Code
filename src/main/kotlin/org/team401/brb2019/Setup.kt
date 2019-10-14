@@ -28,3 +28,9 @@ fun setup() {
         LEDManager.update(isScoring = false, isIntaking = false, active = SuperstructureRoutines.activeGamepieceMode)
     }
 }
+
+fun auto() {
+    on (Events.AUTO_ENABLED) {
+
+    }
+}

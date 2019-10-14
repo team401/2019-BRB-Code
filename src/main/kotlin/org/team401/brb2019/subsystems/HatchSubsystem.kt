@@ -13,7 +13,7 @@ import org.team401.brb2019.constants.HardwareMap
 object HatchSubsystem : Subsystem() {
     private val pusherSolenoid = Solenoid(HardwareMap.hatchPusherSolenoidId)
     private val wheelsTalon = TalonSRX(HardwareMap.hatchWheelsTalonId)
-    val tick = Ticker(({ wheelsTalon.outputCurrent > 50.0 }), 0.5.Seconds, 0.02.Seconds)
+    private val tick = Ticker(({ wheelsTalon.outputCurrent > 50.0 }), 0.5.Seconds, 0.02.Seconds)
 
     enum class States {
         Stowed,

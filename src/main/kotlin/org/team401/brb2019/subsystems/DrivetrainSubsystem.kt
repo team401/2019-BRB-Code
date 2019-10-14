@@ -3,6 +3,7 @@ package org.team401.brb2019.subsystems
 import com.ctre.phoenix.motorcontrol.NeutralMode
 import com.ctre.phoenix.motorcontrol.can.TalonSRX
 import org.snakeskin.component.IDifferentialDrivetrain
+import org.snakeskin.component.TalonPigeonIMU
 import org.snakeskin.component.impl.CTRESmartGearbox
 import org.snakeskin.component.impl.DifferentialDrivetrain
 import org.snakeskin.dsl.*
@@ -22,8 +23,10 @@ object DrivetrainSubsystem: Subsystem(), IDifferentialDrivetrain<CTRESmartGearbo
     CTRESmartGearbox(TalonSRX(HardwareMap.rightDriveFrontTalonId), TalonSRX(HardwareMap.rightDriveRearTalonId)),
     DrivetrainGeometry
 ) {
+
     enum class States {
-        OperatorControl
+        OperatorControl,
+        ExternalControl
     }
 
     private val cheesyController = CheesyDriveController(object : CheesyDriveController.DefaultParameters() {
@@ -70,7 +73,7 @@ object DrivetrainSubsystem: Subsystem(), IDifferentialDrivetrain<CTRESmartGearbo
         left.inverted = false
         right.inverted = true
 
-        on(Events.ENABLED) {
+        on(Events.TELEOP_ENABLED) {
             driveMachine.setState(States.OperatorControl)
         }
     }
