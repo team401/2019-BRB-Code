@@ -2,6 +2,7 @@ package org.team401.brb2019.subsystems
 
 import com.ctre.phoenix.motorcontrol.NeutralMode
 import com.ctre.phoenix.motorcontrol.can.TalonSRX
+import com.ctre.phoenix.sensors.PigeonIMU
 import org.snakeskin.component.IDifferentialDrivetrain
 import org.snakeskin.component.TalonPigeonIMU
 import org.snakeskin.component.impl.CTRESmartGearbox
@@ -23,6 +24,20 @@ object DrivetrainSubsystem: Subsystem(), IDifferentialDrivetrain<CTRESmartGearbo
     CTRESmartGearbox(TalonSRX(HardwareMap.rightDriveFrontTalonId), TalonSRX(HardwareMap.rightDriveRearTalonId)),
     DrivetrainGeometry
 ) {
+
+    val imu = PigeonIMU(1)
+    private val ypr = DoubleArray(3)
+
+    @Synchronized
+    fun setHeading(degrees: Double) {
+        imu.setYaw(degrees)
+    }
+
+    @Synchronized
+    fun getHeadingDegrees(): Double {
+        imu.getYawPitchRoll(ypr)
+        return ypr[0]
+    }
 
     enum class States {
         OperatorControl,
