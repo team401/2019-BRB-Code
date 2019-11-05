@@ -10,11 +10,9 @@ class Drive(): AutoStep() {
 
     var pigeonAngle = DrivetrainSubsystem.getHeadingDegrees()
 
-
     private val leftTargetRotations = 1
     private val rightTargetRotations = 1
 
-    //set to actual values later
     private val motorIncreasePercentConstant = 0.3
     private val motorDecreasePercentConstant = 0.05
 
