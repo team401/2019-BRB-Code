@@ -2,12 +2,11 @@ package org.team401.brb2019.auto.steps
 import com.ctre.phoenix.motorcontrol.ControlMode
 import org.snakeskin.auto.steps.AutoStep
 import org.team401.brb2019.subsystems.DrivetrainSubsystem
-import com.ctre.phoenix.sensors.PigeonIMU
 import kotlin.math.abs
 
 class Drive(): AutoStep() {
-    val left = DrivetrainSubsystem.left.master
-    val right = DrivetrainSubsystem.right.master
+    private val left = DrivetrainSubsystem.left.master
+    private val right = DrivetrainSubsystem.right.master
 
     var pigeonAngle = DrivetrainSubsystem.getHeadingDegrees()
 
@@ -40,20 +39,15 @@ class Drive(): AutoStep() {
         leftRotations = left.selectedSensorPosition / 4096
         rightRotations = right.selectedSensorPosition / 4096
 
-
     if (abs(pigeonAngle) > pigeonErrorThreshold) {
 
-        //determine motor change percents, use PID later
-        var motorIncreasePercent = motorIncreasePercentConstant
-        var motorDecreasePercent = motorDecreasePercentConstant
-
         if (pigeonAngle < 0) {
-            leftPower = (1 + motorIncreasePercent) * leftPower
-            rightPower = (1 - motorDecreasePercent) * rightPower
+            leftPower *= (1 + motorDecreasePercentConstant)
+            rightPower *= (1 - motorDecreasePercentConstant)
         }
         else {
-            leftPower = (1 - motorDecreasePercent) * leftPower
-            rightPower = (1 + motorIncreasePercent) * rightPower
+            leftPower *= (1 - motorDecreasePercentConstant)
+            rightPower *= (1 + motorIncreasePercentConstant)
         }
     }
 
