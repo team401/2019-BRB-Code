@@ -1,5 +1,6 @@
 package org.team401.brb2019.subsystems
 
+import com.ctre.phoenix.motorcontrol.FeedbackDevice
 import com.ctre.phoenix.motorcontrol.NeutralMode
 import com.ctre.phoenix.motorcontrol.can.TalonSRX
 import com.ctre.phoenix.sensors.PigeonIMU
@@ -20,12 +21,12 @@ import org.team401.brb2019.constants.DrivetrainGeometry
 import org.team401.brb2019.constants.HardwareMap
 
 object DrivetrainSubsystem: Subsystem(), IDifferentialDrivetrain<CTRESmartGearbox<TalonSRX>> by DifferentialDrivetrain(
-    CTRESmartGearbox(TalonSRX(HardwareMap.leftDriveFrontTalonId), TalonSRX(HardwareMap.leftDriveRearTalonId)),
-    CTRESmartGearbox(TalonSRX(HardwareMap.rightDriveFrontTalonId), TalonSRX(HardwareMap.rightDriveRearTalonId)),
+    CTRESmartGearbox(TalonSRX(HardwareMap.leftDriveRearTalonId), TalonSRX(HardwareMap.leftDriveFrontTalonId)),
+    CTRESmartGearbox(TalonSRX(HardwareMap.rightDriveRearTalonId), TalonSRX(HardwareMap.rightDriveFrontTalonId)),
     DrivetrainGeometry
 ) {
 
-    val imu = PigeonIMU(1)
+    val imu = PigeonIMU(left.slaves[0] as TalonSRX)
     private val ypr = DoubleArray(3)
 
     @Synchronized
@@ -80,6 +81,8 @@ object DrivetrainSubsystem: Subsystem(), IDifferentialDrivetrain<CTRESmartGearbo
             master.setNeutralMode(NeutralMode.Brake)
             setCurrentLimit(40.0, 100.0, 0.1.Seconds)
             setRampRate(0.25)
+            master.setSensorPhase(true)
+            master.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative)
             slaves.forEach {
                 it.setNeutralMode(NeutralMode.Brake)
             }
