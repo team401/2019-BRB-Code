@@ -2,7 +2,6 @@ package org.team401.brb2019.auto.steps
 import com.ctre.phoenix.motorcontrol.ControlMode
 import org.snakeskin.auto.steps.AutoStep
 import org.team401.brb2019.subsystems.DrivetrainSubsystem
-import kotlin.math.abs
 
 class CorrectedDrive(val targetDistance: Double): AutoStep() {
     private val left = DrivetrainSubsystem.left.master
@@ -16,9 +15,9 @@ class CorrectedDrive(val targetDistance: Double): AutoStep() {
 
     private var leftPower = 0.5
     private var rightPower = 0.5
-    private var basePower = 0.5
+    private var basePower = 0.9
 
-    private val angleKp = 0.015
+    private val angleKp = 0.5
     private val distanceKp = 0.25
 
     private var leftAtDist = false
@@ -43,8 +42,8 @@ class CorrectedDrive(val targetDistance: Double): AutoStep() {
         pigeonAngle = DrivetrainSubsystem.getHeadingDegrees()
         correctionFactor = pigeonAngle * angleKp
 
-        leftPower = distancePower - correctionFactor
-        rightPower = distancePower + correctionFactor
+        leftPower = basePower - correctionFactor
+        rightPower = basePower + correctionFactor
 
         left.set(ControlMode.PercentOutput, leftPower)
         right.set(ControlMode.PercentOutput, rightPower)

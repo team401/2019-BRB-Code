@@ -9,7 +9,7 @@ object EverybotAutoRoutine: RobotAuto(20L) {
 
     override fun assembleAuto(): SequentialSteps {
         return auto {
-            step(CorrectedDrive(6.0))
+            step(CorrectedDrive(10.0))
         }
     }
 }
