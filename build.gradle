@@ -25,6 +25,7 @@ dependencies {
     implementation wpi.deps.wpilib()
     implementation wpi.deps.vendor.java()
     implementation 'com.github.team401:LightLink-Java:1.1'
+    implementation "org.team401:Taxis:1.3"
     nativeZip wpi.deps.vendor.jni(wpi.platforms.roborio)
 }
 

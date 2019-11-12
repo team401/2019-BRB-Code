@@ -7,11 +7,9 @@ class CorrectedDrive(val targetDistance: Double): AutoStep() {
     private val left = DrivetrainSubsystem.left.master
     private val right = DrivetrainSubsystem.right.master
 
-    var pigeonAngle = DrivetrainSubsystem.getHeadingDegrees()
+    var pigeonAngle = 0.0 //DrivetrainSubsystem.getHeadingDegrees()
 
     private var correctionFactor = 0.0
-
-
 
     private var leftPower = 0.5
     private var rightPower = 0.5
@@ -24,7 +22,7 @@ class CorrectedDrive(val targetDistance: Double): AutoStep() {
     private var rightAtDist = false
 
     override fun entry(currentTime: Double) {
-        DrivetrainSubsystem.setHeading(0.0)
+        //DrivetrainSubsystem.setHeading(0.0)
         DrivetrainSubsystem.driveMachine.setState(DrivetrainSubsystem.States.ExternalControl)
         left.setSelectedSensorPosition(0, 0, 1000)
         right.setSelectedSensorPosition(0, 0, 1000)
@@ -39,7 +37,7 @@ class CorrectedDrive(val targetDistance: Double): AutoStep() {
         val error = targetDistance - dist
         val distancePower = error * distanceKp
 
-        pigeonAngle = DrivetrainSubsystem.getHeadingDegrees()
+        pigeonAngle = 0.0//DrivetrainSubsystem.getHeadingDegrees()
         correctionFactor = pigeonAngle * angleKp
 
         leftPower = basePower - correctionFactor

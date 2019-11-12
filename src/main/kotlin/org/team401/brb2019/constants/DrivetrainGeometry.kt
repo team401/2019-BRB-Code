@@ -6,5 +6,5 @@ import org.snakeskin.template.TankDrivetrainGeometryTemplate
 
 object DrivetrainGeometry : TankDrivetrainGeometryTemplate {
     override val wheelRadius = 3.0.Inches
-    override val wheelbase = 1.0.Inches
+    override val wheelbase = 22.75.Inches
 }
