@@ -1,17 +1,13 @@
 package org.team401.brb2019.subsystems
 
+import com.ctre.phoenix.motorcontrol.ControlFrame
 import com.ctre.phoenix.motorcontrol.FeedbackDevice
 import com.ctre.phoenix.motorcontrol.NeutralMode
 import com.ctre.phoenix.motorcontrol.can.TalonSRX
-import com.ctre.phoenix.sensors.PigeonIMU
-import org.snakeskin.component.IDifferentialDrivetrain
+import edu.wpi.first.wpilibj.RobotController
 import org.snakeskin.component.TalonPigeonIMU
 import org.snakeskin.component.impl.CTRESmartGearbox
-import org.snakeskin.component.impl.DifferentialDrivetrain
-import org.snakeskin.dsl.StateMachine
-import org.snakeskin.dsl.Subsystem
-import org.snakeskin.dsl.on
-import org.snakeskin.dsl.stateMachine
+import org.snakeskin.dsl.*
 import org.snakeskin.event.Events
 import org.snakeskin.logic.scalars.Scalar
 import org.snakeskin.logic.scalars.ScalarGroup
@@ -42,7 +38,8 @@ object DrivetrainSubsystem: Subsystem(), IPathFollowingDiffDrive<CTRESmartGearbo
     enum class States {
         OperatorControl,
         ExternalControl,
-        MeasureEff
+        MeasureEff,
+        PathFollowing
     }
 
     val stateEstimator = OdometryTracker(this)
@@ -61,6 +58,9 @@ object DrivetrainSubsystem: Subsystem(), IPathFollowingDiffDrive<CTRESmartGearbo
         state(States.OperatorControl) {
             entry {
                 cheesyController.reset()
+                both{
+                    setRampRate(0.25)
+                }
             }
             action {
                 /*
@@ -78,6 +78,7 @@ object DrivetrainSubsystem: Subsystem(), IPathFollowingDiffDrive<CTRESmartGearbo
                  )
             }
         }
+
         state(States.MeasureEff){
             action {
                 left.set(1.0)
@@ -89,10 +90,32 @@ object DrivetrainSubsystem: Subsystem(), IPathFollowingDiffDrive<CTRESmartGearbo
                 println("Left: ${(leftRPM / freeSpeedRPM).value * 100.0}  Right: ${(rightRPM / freeSpeedRPM).value * 100.0}")
             }
         }
+
+        state(States.PathFollowing) {
+            entry {
+                both {
+                    setDeadband(0.0)
+                    setRampRate(0.0)
+                }
+            }
+
+            rtAction {
+                val output = pathManager.update(time, driveState.getFieldToVehicle(time))
+                val vbus = RobotController.getBatteryVoltage()
+                val leftOut = output.left_feedforward_voltage / vbus
+                val rightOut = output.right_feedforward_voltage / vbus
+
+                tank(leftOut, rightOut)
+            }
+
+            exit {
+                stop()
+            }
+        }
     }
 
     override fun action () {
-        println(driveState.getLatestFieldToVehicle().value)
+        //println(driveState.getLatestFieldToVehicle().value)
     }
 
     override fun setup() {
@@ -102,6 +125,7 @@ object DrivetrainSubsystem: Subsystem(), IPathFollowingDiffDrive<CTRESmartGearbo
             setRampRate(0.25)
             master.setSensorPhase(true)
             master.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative)
+            master.setControlFramePeriod(ControlFrame.Control_3_General, 5)
             slaves.forEach {
                 it.setNeutralMode(NeutralMode.Brake)
             }
