@@ -18,7 +18,9 @@ object EverybotAutoRoutine: RobotAuto(10L) {
             step(DrivePath(
                 listOf(
                     Pose2d.identity(),
-                    Pose2d(16.0 * 12, 3.0 * 12, Rotation2d.fromDegrees(0.0))
+                    Pose2d(6.0 * 12, 0.0, Rotation2d.fromDegrees(0.0)),
+                    Pose2d(10.0 * 12, 4.0 * 12.0, Rotation2d.fromDegrees(90.0)),
+                    Pose2d(10.0 * 12, 8.0 * 12, Rotation2d.fromDegrees(90.0))
                 )
             ))
         }

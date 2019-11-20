@@ -1,8 +1,6 @@
 package org.team401.brb2019.subsystems
 
-import com.ctre.phoenix.motorcontrol.ControlFrame
-import com.ctre.phoenix.motorcontrol.FeedbackDevice
-import com.ctre.phoenix.motorcontrol.NeutralMode
+import com.ctre.phoenix.motorcontrol.*
 import com.ctre.phoenix.motorcontrol.can.TalonSRX
 import edu.wpi.first.wpilibj.RobotController
 import org.snakeskin.component.TalonPigeonIMU
@@ -136,6 +134,9 @@ object DrivetrainSubsystem: Subsystem(), IPathFollowingDiffDrive<CTRESmartGearbo
 
         both {
             setPosition(0.0.Radians)
+            master.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 5, 100)
+            master.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_50Ms, 100)
+            master.configVelocityMeasurementWindow(1, 100)
         }
 
         setPose(Pose2d.identity())

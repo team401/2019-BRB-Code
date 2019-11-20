@@ -13,8 +13,8 @@ class DrivePath(val waypoints: List<Pose2d>) : AutoStep() {
         false,
         waypoints,
         listOf(CentripetalAccelerationConstraint(110.0)),
-        2.0 * 12.0,
-        4.0 * 12.0,
+        6.0 * 12.0,
+        6.0 * 12.0,
         9.0
     )
 
